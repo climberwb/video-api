@@ -11,20 +11,33 @@ from comments.forms import CommentForm
 from comments.models import Comment
 
 
-
-from rest_framework import generics
+from rest_framework.authentication import SessionAuthentication, BasicAuthentication
+from rest_framework_jwt.authentication import JSONWebTokenAuthentication
+from comments.serializers import CommentSerializer
+from rest_framework import generics, permissions
 
 
 from .models import Video, Category, TaggedItem
 from .serializers import CategorySerializer
-from videos.views import CategoryListAPIView
+from rest_framework.pagination import PageNumberPagination
+
+class LargeResultsSetPagination(PageNumberPagination):
+    page_size = 2
+    # page_size_query_param = 'page_size'
+    # max_page_size = 10000
 
 class CategoryListAPIView(generics.ListAPIView):
+	authentication_classes = [SessionAuthentication, BasicAuthentication, JSONWebTokenAuthentication]
+	queryset = Category.objects.all()
+	serializer_class = CategorySerializer
+	permission_classes = [permissions.IsAuthenticated]
+	pagination_class =LargeResultsSetPagination
 	#authentication
 	# queryset
 	# serializer_class
 	# permission_classes
 	# paginate_by
+	# pass
 
 #@login_required
 def video_detail(request, cat_slug, vid_slug):
