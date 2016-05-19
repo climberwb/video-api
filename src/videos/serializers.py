@@ -6,9 +6,11 @@ from comments.serializers import CommentSerializer
 from .models import Video,Category
 
 
-
-
+class CategoryUrlHyperlinkedIdentityField(serializers.HyperlinkedIdentityField):
+    lookup_field = 'slug'
+    pass
 class CategorySerializer(serializers.HyperlinkedModelSerializer):
+    url = CategoryUrlHyperlinkedIdentityField(view_name='category_detail_api')
     # category_url = serializers.CharField(source='category.get_absolute_url', read_only=True)
     # category_title = serializers.CharField(source='self.title', read_only=True)
     # category_image = serializers.CharField(source='self.get_image_url', read_only=True)

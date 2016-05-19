@@ -39,6 +39,17 @@ class CategoryListAPIView(generics.ListAPIView):
 	# paginate_by
 	# pass
 
+class CategoryDetailAPIView(generics.RetrieveAPIView):
+	authentication_classes = [SessionAuthentication, BasicAuthentication, JSONWebTokenAuthentication]
+	queryset = Category.objects.all()
+	serializer_class = CategorySerializer
+	permission_classes = [permissions.IsAuthenticated]
+	
+	def get_object(self):
+		slug = self.kwargs.pop("slug")
+		obj = get_object_or_404(Category,slug=slug)
+		return obj
+
 #@login_required
 def video_detail(request, cat_slug, vid_slug):
 	cat = get_object_or_404(Category, slug=cat_slug)
