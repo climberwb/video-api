@@ -9,6 +9,14 @@ from .models import Comment
 
 User = get_user_model()
 
+class CommentUpdateSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Comment
+        fields = [
+                'text'
+            ]
+
+
 class CommentCreateSerializer(serializers.ModelSerializer):
     class Meta:
         model = Comment
@@ -34,6 +42,7 @@ class ChildCommentSerializer(serializers.HyperlinkedModelSerializer):
 
 
 class CommentSerializer(serializers.HyperlinkedModelSerializer):
+    url = serializers.HyperlinkedIdentityField("comment_detail_api",lookup_field="pk")
     user = serializers.PrimaryKeyRelatedField(queryset=User.objects.all())
     children = serializers.SerializerMethodField(read_only=True)
     
@@ -63,3 +72,4 @@ class CommentViewSet(viewsets.ModelViewSet):
     queryset = Comment.objects.all()
     serializer_class = CommentSerializer
     
+

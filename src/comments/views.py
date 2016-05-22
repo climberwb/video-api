@@ -13,10 +13,11 @@ from rest_framework import generics, mixins
 from .models import Comment
 from .forms import CommentForm
 from .serializers import CommentCreateSerializer
+from .permissions import IsOwnerOrReadOnly
 
 from rest_framework.authentication import SessionAuthentication, BasicAuthentication
 from rest_framework_jwt.authentication import JSONWebTokenAuthentication
-from comments.serializers import CommentSerializer,CommentCreateSerializer
+from comments.serializers import CommentSerializer,CommentCreateSerializer,CommentUpdateSerializer
 
 from rest_framework import generics, permissions
 
@@ -25,7 +26,12 @@ class CommentCreateAPIView(generics.CreateAPIView):
 	# queryset = Comment.objects.filter(request.user)
 	serializer_class = CommentCreateSerializer
 	# permission_classes = [permissions.IsAuthenticated]
-	
+class CommentDetailAPIView(mixins.UpdateModelMixin, generics.RetrieveAPIView):
+	serializer_class = CommentUpdateSerializer
+	queryset = Comment.objects.all()
+	permission_classes = [IsOwnerOrReadOnly]
+	def put(self, request,*args,**kwargs):
+		return self.update(request,*args, **kwargs)
 
 @login_required
 def comment_thread(request, id):
