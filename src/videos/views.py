@@ -18,8 +18,15 @@ from rest_framework import generics, permissions
 
 
 from .models import Video, Category, TaggedItem
-from .serializers import CategorySerializer
+from .serializers import CategorySerializer, VideoSerializer
 from rest_framework.pagination import PageNumberPagination
+
+
+
+class VideoDetailAPIView(generics.RetrieveAPIView):
+	lookup_field = "slug"
+	queryset = Video.objects.all()
+	serializer_class = VideoSerializer
 
 class LargeResultsSetPagination(PageNumberPagination):
     page_size = 2
@@ -28,6 +35,7 @@ class LargeResultsSetPagination(PageNumberPagination):
 
 class CategoryListAPIView(generics.ListAPIView):
 	authentication_classes = [SessionAuthentication, BasicAuthentication, JSONWebTokenAuthentication]
+
 	queryset = Category.objects.all()
 	serializer_class = CategorySerializer
 	permission_classes = [permissions.IsAuthenticated]
