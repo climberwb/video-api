@@ -43,6 +43,10 @@ class CommentDetailAPIView(mixins.DestroyModelMixin,mixins.UpdateModelMixin, gen
 	serializer_class = CommentUpdateSerializer
 	queryset = Comment.objects.all()
 	permission_classes = [IsOwnerOrReadOnly]
+	
+	# def get_queryset(self,*args,**kwargs):
+	# 	queryset = Comment.objects.all()
+		
 	def put(self, request,*args,**kwargs):
 		return self.update(request,*args, **kwargs)
 		
