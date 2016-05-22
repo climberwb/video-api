@@ -20,18 +20,34 @@ from rest_framework_jwt.authentication import JSONWebTokenAuthentication
 from comments.serializers import CommentSerializer,CommentCreateSerializer,CommentUpdateSerializer
 
 from rest_framework import generics, permissions
+from rest_framework.pagination import PageNumberPagination
+
+class LargeResultsSetPagination(PageNumberPagination):
+    page_size = 5
+
+class CommentListAPIView(generics.ListAPIView):
+	# authentication_classes = [SessionAuthentication, BasicAuthentication, JSONWebTokenAuthentication]
+
+	queryset = Comment.objects.all()
+	serializer_class = CommentSerializer
+	permission_classes = [permissions.IsAuthenticated]
+	# paginate_by=10
+	pagination_class = LargeResultsSetPagination
 
 class CommentCreateAPIView(generics.CreateAPIView):
 	# authentication_classes = [SessionAuthentication, BasicAuthentication, JSONWebTokenAuthentication]
 	# queryset = Comment.objects.filter(request.user)
 	serializer_class = CommentCreateSerializer
 	# permission_classes = [permissions.IsAuthenticated]
-class CommentDetailAPIView(mixins.UpdateModelMixin, generics.RetrieveAPIView):
+class CommentDetailAPIView(mixins.DestroyModelMixin,mixins.UpdateModelMixin, generics.RetrieveAPIView):
 	serializer_class = CommentUpdateSerializer
 	queryset = Comment.objects.all()
 	permission_classes = [IsOwnerOrReadOnly]
 	def put(self, request,*args,**kwargs):
 		return self.update(request,*args, **kwargs)
+		
+	def delete(self,request, *args, **kwargs):
+		return self.destroy(request,*args, **kwargs)
 
 @login_required
 def comment_thread(request, id):

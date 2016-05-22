@@ -10,7 +10,7 @@ from rest_framework_jwt.views import obtain_jwt_token
 from videos.serializers import VideoViewSet,CategoryViewSet
 from comments.serializers import CommentViewSet
 from videos.views import CategoryListAPIView, CategoryDetailAPIView,VideoDetailAPIView
-from comments.views import CommentCreateAPIView,CommentDetailAPIView
+from comments.views import CommentCreateAPIView,CommentDetailAPIView,CommentListAPIView
 
 router =  routers.DefaultRouter()
 router.register(r"categories", CategoryViewSet)
@@ -21,6 +21,7 @@ router.register(r"videos", VideoViewSet)
 urlpatterns = patterns('',
     url(r'^api2/video/(?P<slug>[\w-]+)/',VideoDetailAPIView.as_view(), name="video_detail_api"),
     url(r'^api2/comment/(?P<pk>\d+)/$',CommentDetailAPIView.as_view(), name="comment_detail_api"),
+    url(r'^api2/comments/$',CommentListAPIView.as_view(), name="comment_list_api"),
     url(r'^api2/comment/create/$',CommentCreateAPIView.as_view(), name="comment_create_api"),
     url(r'^api2/projects/$',CategoryListAPIView.as_view(), name='category_list_api'),
     url(r'^api2/projects/(?P<slug>[\w-]+)/',CategoryDetailAPIView.as_view(), name='category_detail_api'),
