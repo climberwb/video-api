@@ -24,9 +24,13 @@ from rest_framework.pagination import PageNumberPagination
 
 
 class VideoDetailAPIView(generics.RetrieveAPIView):
-	lookup_field = "slug"
+	# lookup_field = "vid_slug"
 	queryset = Video.objects.all()
 	serializer_class = VideoSerializer
+	def get_object(self):
+		slug = self.kwargs.pop("vid_slug")
+		obj = get_object_or_404(Video,slug=slug)
+		return obj
 
 class LargeResultsSetPagination(PageNumberPagination):
     page_size = 2
