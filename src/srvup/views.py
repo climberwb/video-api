@@ -6,6 +6,10 @@ from django.shortcuts import render, HttpResponseRedirect, redirect
 from django.utils.safestring import mark_safe
 
 
+from rest_framework.decorators import api_view
+from rest_framework.response import Response as RestResponse
+from rest_framework.reverse import reverse as api_reverse
+
 
 from accounts.forms import RegisterForm, LoginForm
 from accounts.models import MyUser
@@ -24,8 +28,19 @@ from videos.models import Video, Category
 
 
 
-
-
+@api_view(["GET"])
+def api_home(request):
+	data = {
+		"projects":{ 
+			"url": api_reverse("category_list_api"),
+			"count": Category.objects.all().count(),
+		},
+		"comments": {
+					 "url":api_reverse("comment_list_api"),
+					 "count": Comment.objects.all().count(),
+		}
+	}
+	return RestResponse(data)
 
 
 

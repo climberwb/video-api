@@ -19,6 +19,7 @@ router.register(r"videos", VideoViewSet)
 
 
 urlpatterns = patterns('',
+    url(r'^api2/$', 'srvup.views.api_home',name="api_home"),
     url(r'^api2/video/(?P<cat_slug>[\w-]+)/(?P<vid_slug>[\w-]+)/',VideoDetailAPIView.as_view(), name="video_detail_api"),
     url(r'^api2/comment/(?P<pk>\d+)/$',CommentDetailAPIView.as_view(), name="comment_detail_api"),
     url(r'^api2/comments/$',CommentListAPIView.as_view(), name="comment_list_api"),
