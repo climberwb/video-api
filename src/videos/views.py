@@ -20,13 +20,14 @@ from rest_framework import generics, permissions
 from .models import Video, Category, TaggedItem
 from .serializers import CategorySerializer, VideoSerializer
 from rest_framework.pagination import PageNumberPagination
-
+from .permissions import IsMember
 
 
 class VideoDetailAPIView(generics.RetrieveAPIView):
 	# lookup_field = "vid_slug"
 	queryset = Video.objects.all()
 	serializer_class = VideoSerializer
+	permission_classes = [IsMember]
 	def get_object(self):
 		slug = self.kwargs.pop("vid_slug")
 		obj = get_object_or_404(Video,slug=slug)
