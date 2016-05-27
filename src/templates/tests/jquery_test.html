@@ -23,17 +23,36 @@
 <script src='https://code.jquery.com/jquery-1.11.3.min.js'></script>
 <script type="text/javascript">
 	$(document).ready(function(){
-		$("#ajaxBtn").click(function(){
-			$("#itemContainer").html("<h1>Hi</h1>");
-			 $.ajax({
+	    var second_call = function(token){
+	        $.ajax({
               type: "GET",
               url: "https://video-api-climberwb.c9users.io/api2/projects",
               data: {
-                // 
+                "SessionAuthentication":token
               },
               success: function(data){
                 // console.log(https://video-api-climberwb.c9users.io/api2/projects/)
               	console.log(data);
+              	
+              },
+              error: function(data){
+                console.log(data);
+              },
+           });
+	    }
+		$("#ajaxBtn").click(function(){
+			$("#itemContainer").html("<h1>Hi</h1>");
+			 $.ajax({
+              type: "POST",
+              url: "https://video-api-climberwb.c9users.io/api/auth/token/",
+              data: {
+                "username":"climberwb",
+                "password":"videoapi"
+              },
+              success: function(data){
+                // console.log(https://video-api-climberwb.c9users.io/api2/projects/)
+              	console.log(data);
+              	second_call(data)
               },
               error: function(data){
                 console.log(data);
