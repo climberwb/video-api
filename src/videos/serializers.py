@@ -46,7 +46,8 @@ class VideoSerializer(serializers.HyperlinkedModelSerializer):
                 # 'category',
                 'category_image',
                 'category_title',
-                "comment_set"
+                "comment_set",
+                "free_preview"
                 # 'category_url'
             ]
  

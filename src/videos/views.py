@@ -29,7 +29,7 @@ class VideoDetailAPIView(generics.RetrieveAPIView):
 	serializer_class = VideoSerializer
 	permission_classes = [IsMember]
 	def get_object(self):
-		slug = self.kwargs.pop("vid_slug")
+		slug = self.kwargs["vid_slug"]
 		obj = get_object_or_404(Video,slug=slug)
 		return obj
 
