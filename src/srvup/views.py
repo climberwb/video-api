@@ -103,7 +103,9 @@ def home(request):
 	
 	return render(request,template,context)
 
-
+def jquery_test(request):
+	return render(request,'tests/jquery_test.html')
+	
 
 
 # def home(request):
