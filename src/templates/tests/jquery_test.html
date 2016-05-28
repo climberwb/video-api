@@ -26,9 +26,12 @@
 	    var second_call = function(token){
 	        $.ajax({
               type: "GET",
-              url: "https://video-api-climberwb.c9users.io/api2/projects",
+              url: "https://video-api-climberwb.c9users.io/api2/projects/",
+               headers:{
+                "Authorization":"JWT "+token
+              },
               data: {
-                "SessionAuthentication":token
+                // "SessionAuthentication":token
               },
               success: function(data){
                 // console.log(https://video-api-climberwb.c9users.io/api2/projects/)
@@ -52,7 +55,7 @@
               success: function(data){
                 // console.log(https://video-api-climberwb.c9users.io/api2/projects/)
               	console.log(data);
-              	second_call(data)
+              	second_call(data.token)
               },
               error: function(data){
                 console.log(data);
